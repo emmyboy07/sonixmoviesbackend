@@ -1,12 +1,19 @@
 #!/bin/bash
-# Install Chrome
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
-sudo apt update
-sudo apt install -y google-chrome-stable
 
-# Install ChromeDriver
-CHROME_VERSION=$(google-chrome-stable --version | cut -d ' ' -f 3 | cut -d '.' -f 1)
-wget -O /tmp/chromedriver.zip https://chromedriver.storage.googleapis.com/${CHROME_VERSION}.0.0.0/chromedriver_linux64.zip
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install Chromium & Chromedriver (Render doesn't support sudo)
+wget -qO- https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb > chrome.deb
+apt-get update && apt-get install -y ./chrome.deb
+rm chrome.deb
+
+# Get the correct version of Chromedriver
+CHROME_VERSION=$(google-chrome-stable --version | awk '{print $3}' | cut -d '.' -f 1)
+wget -q "https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)/chromedriver_linux64.zip" -O /tmp/chromedriver.zip
+
+# Extract and move Chromedriver
 unzip /tmp/chromedriver.zip -d /usr/bin/
 chmod +x /usr/bin/chromedriver
+
+echo "✅ Build setup complete!"

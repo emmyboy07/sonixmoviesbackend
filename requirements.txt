@@ -1,10 +1,5 @@
 Flask
 gunicorn
 selenium
-beautifulsoup4
 requests
-webdriver-manager
-trio
-trio-websocket
-urllib3
-werkzeug
+beautifulsoup4

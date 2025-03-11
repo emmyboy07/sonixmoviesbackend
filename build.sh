@@ -1,4 +1,8 @@
 #!/bin/bash
-curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
-apt-get install -y nodejs
+
+echo "2025-03-11 - Installing pre-requisites"
+
+# Install WebTorrent using npm (without apt-get)
 npm install -g webtorrent-cli
+
+echo "WebTorrent installed successfully"
